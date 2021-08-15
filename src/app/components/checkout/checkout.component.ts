@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Country } from 'src/app/common/country';
+import { State } from 'src/app/common/state';
 import { ShopcityFormService } from 'src/app/services/shopcity-form.service';
 
 @Component({
@@ -17,6 +19,9 @@ export class CheckoutComponent implements OnInit {
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
 
+  countries: Country[] = [];
+  shippingAddressStates: State[]=[];
+  billingAddressStates: State[]=[];
   
   constructor(private formBuilder: FormBuilder,
               private shopcityFormService: ShopcityFormService) { }
@@ -73,18 +78,39 @@ export class CheckoutComponent implements OnInit {
         this.creditCardYears = data;
       }
     )
+
+    //populate countries
+
+    this.shopcityFormService.getCountries().subscribe(
+      data => {
+        console.log("Retrieved countries: " + JSON.stringify(data));
+        this.countries = data;
+      }
+    )
+    
   }
 
   onSubmit(){
     console.log("Handling the submit button");
     console.log(this.checkoutFormGroup.get('customer')!.value);
+    console.log("The email address is " + this.checkoutFormGroup.get('customer')!.value.email);
+  
+    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress')!.value.country.name);
+    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress')!.value.state.name);
   }
 
   copyShippingAddressToBillingAddress(event: any){
     if(event.target!.checked){
       this.checkoutFormGroup.controls.billingAddress.setValue(this.checkoutFormGroup.controls.shippingAddress.value);
+
+      //bug fix for states
+      this.billingAddressStates = this.shippingAddressStates;
+
     } else {
       this.checkoutFormGroup.controls.billingAddress.reset();
+
+      //bug fix for states
+      this.billingAddressStates = [];
     }
   }
 
@@ -111,5 +137,29 @@ export class CheckoutComponent implements OnInit {
     )
   }
 
+  getStates(formGroupName: string) {
+
+    const formGroup = this.checkoutFormGroup.get(formGroupName)!;
+    // console.log(formGroup);
+
+    const countryCode = formGroup.value.country.code;
+    const countryName = formGroup.value.country.name;
+
+    console.log(`${formGroupName} country code: ${countryCode}`);
+    console.log(`${formGroupName} country name: ${countryName}`);
+
+    this.shopcityFormService.getStates(countryCode).subscribe(
+      data => {
+        if(formGroupName === 'shippingAddress'){
+          this.shippingAddressStates = data;
+        } else {
+          this.billingAddressStates = data;
+        }
+
+        //select first item by default
+        formGroup.get('state')?.setValue(data[0]);
+      }
+    )
+  }
 
 }
