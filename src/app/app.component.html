@@ -4,7 +4,7 @@
   <aside class="menu-sidebar d-none d-lg-block">
     <div class="logo">
       <a routerLink="/products">
-        <img src="assets/images/Shopcity.png" alt="Shopcity" class="img-responsive">
+        <img src="assets/images/Shopcity.svg" alt="Shopcity" class="img-responsive">
       </a>
     </div>
 
@@ -15,6 +15,14 @@
 
   <!-- PAGE CONTAINER-->
   <div class="page-container">
+    <div class="container-fluid mobile-header">
+      <a routerLink="/products">
+        <img src="assets/images/Shopcity.svg" alt="Shopcity" class="img-responsive title-mobile">
+      </a>
+      <button class="btn btn-primary btn-menu" type="button" 
+              data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" 
+              aria-controls="offcanvasRight">Menu</button>
+    </div>
     <!-- HEADER DESKTOP-->
     <header class="header-desktop">
       <div class="section-content section-content-p30">
@@ -23,6 +31,8 @@
 
             <app-search></app-search>
 
+            <div> 
+              </div>
             <app-login-status></app-login-status>
 
             <app-cart-status></app-cart-status>
@@ -39,8 +49,17 @@
     <router-outlet></router-outlet>
     <!-- <app-product-list></app-product-list> -->
 
-  </div>
-</div>
+    <!-- OFFCANVAS FOR MOBILE -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <app-product-category-menu></app-product-category-menu>
+      </div>
+    </div>
+<!--  -->
 
 <!-- END PAGE CONTAINER -->
 <footer>

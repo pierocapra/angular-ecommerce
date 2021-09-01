@@ -3,11 +3,11 @@
         <div class="container-fluid">
 
             <div *ngIf="cartItems.length > 0">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-fonts">
                     <tr>
-                        <th width="20%">Product Image</th>
-                        <th width="50%">Product Detail</th>
-                        <th width="30%"></th>
+                        <th  class="cart-stat-col1">Product Image</th>
+                        <th  class="cart-stat-col2">Product Detail</th>
+                        <th  class="cart-stat-col3"></th>
                     </tr>
                     <tr *ngFor=" let tempCartItem of cartItems">
                         <td>
@@ -23,18 +23,19 @@
                                 
                                 <div class="row no-gutters">
                                     <div class="col">
-                                        <button (click)="incrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-plus"></i>
+                                        <button (click)="decrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
                                     <div class="col ml-4 mr-2">
                                         {{tempCartItem.quantity}}
                                     </div>
                                     <div class="col">
-                                        <button (click)="decrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-minus"></i>
+                                        <button (click)="incrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
+                                    
                                     <div class="col-8"></div>
                                 </div>
                                 
